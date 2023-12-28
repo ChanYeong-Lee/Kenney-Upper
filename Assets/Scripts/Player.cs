@@ -78,7 +78,7 @@ public class Player : MonoBehaviour
                 }
                 break;
             case State.Jump:
-                if (isGrounded)
+                if (isGrounded && Mathf.Abs(rigidbody.velocity.y) < 0.1f)
                 {
                     state = State.Idle;
                 }
