@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TileGenerator : MonoBehaviour
 {
+    public static TileGenerator Instance { get; private set; }
     private Player player;
 
     public Transform tileParent;
@@ -14,35 +15,32 @@ public class TileGenerator : MonoBehaviour
     private Queue<GameObject> tileQueue = new Queue<GameObject>();
     private void Awake()
     {
+        Instance = this;
         player = GameManager.Instance.player;
     }
 
-    private void GenerateTile()
+    public GameObject GenerateTile(Vector2 pos)
     {
-        float posX = Random.Range(-3f, 3f);
-        float posY = player.transform.position.y + Random.Range(1, player.jumpHeight - 0.2f);
         GameObject newTile;
-        if (tileQueue.Count < 1)
+        if (tileQueue.Count > 0)
         {
-            newTile = Instantiate(tilePrefabs[Random.Range(0, tilePrefabs.Length)]);
-            newTile.transform.parent = tileParent;
+            newTile = tileQueue.Dequeue();
         }
         else
         {
-            newTile = tileQueue.Dequeue();
-            newTile.SetActive(true);
+            newTile = Instantiate(tilePrefabs[Random.Range(0, tilePrefabs.Length)]);
         }
-        newTile.transform.position = new Vector2(posX, posY);
-        prevHeight = newTile.transform;
+        newTile.transform.parent = tileParent;
+        newTile.transform.position = pos;
+        newTile.SetActive(true);
+
+        return newTile;
     }
 
-    private void RemoveTile()
+    public void RemoveTile(GameObject tile)
     {
-        if (player.transform.position.y > prevHeight.position.y + 15)
-        {
-            prevHeight.gameObject.SetActive(false);
-            tileQueue.Enqueue(prevHeight.gameObject);
-        }
+        tile.SetActive(false);
+        tileQueue.Enqueue(tile);
     }
-
+   
 }

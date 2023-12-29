@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class ThroughPlatform : MonoBehaviour
 {
-    private GameObject platform;
+    private Tile platform;
     private void Awake()
     {
-        platform = GetComponentInParent<GameObject>();
+        platform = GetComponentInParent<Tile>();
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
-            platform.layer = LayerMask.NameToLayer("Throughing");
+            platform.gameObject.layer = LayerMask.NameToLayer("Throughing");
         }
     }
 
@@ -21,7 +21,7 @@ public class ThroughPlatform : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            platform.layer = LayerMask.NameToLayer("Platform");
+            platform.gameObject.layer = LayerMask.NameToLayer("Platform");
         }
     }
 }

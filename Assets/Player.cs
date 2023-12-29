@@ -28,13 +28,13 @@ public class Player : MonoBehaviour
     {
         float x = Input.GetAxisRaw("Horizontal");
 
-        float jumpForce = jumpHeight * 9.8f;
+        float jumpVel = Mathf.Sqrt(jumpHeight * 39.24f) *(3 / 2);
 
         if (onGround)
         {
             if (Input.GetButtonDown("Jump"))
             {
-                rigidbody.AddForce(Vector2.up * jumpForce);
+                rigidbody.velocity = Vector2.up * jumpVel;
                 state = State.Jump;
             }
         }
